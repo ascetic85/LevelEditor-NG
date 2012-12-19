@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>560</width>
+    <height>427</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="LevelEditor" name="levelEditor">
+       <attribute name="title">
+        <string>Level Editor</string>
+       </attribute>
+      </widget>
+      <widget class="CustomProperties" name="customProperties">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <attribute name="title">
+        <string>Custom Properties</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="supportingCode">
+       <attribute name="title">
+        <string>Supporint Code</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="documentation">
+       <attribute name="title">
+        <string>Documentation</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="messages">
+       <attribute name="title">
+        <string>Messages</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>560</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionNew_Level"/>
+    <addaction name="actionOpen_Level"/>
+    <addaction name="separator"/>
+    <addaction name="actionNew_Project"/>
+    <addaction name="actionOpen_Project"/>
+    <addaction name="actionOpen_Recent_Project"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave_Level"/>
+    <addaction name="actionSave_Level_As"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave_As_Assert"/>
+    <addaction name="separator"/>
+    <addaction name="actionGenerate_Code"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionUndo_transform_LHSprite_node"/>
+    <addaction name="actionRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actionCut"/>
+    <addaction name="actionCut_With_Joints"/>
+    <addaction name="actionCopy"/>
+    <addaction name="actionCopy_With_Joints"/>
+    <addaction name="actionPaste"/>
+    <addaction name="separator"/>
+    <addaction name="separator"/>
+    <addaction name="actionDelete"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionHide_Toolbar"/>
+    <addaction name="actionCustomize_Toolbar"/>
+   </widget>
+   <widget class="QMenu" name="menuWindow">
+    <property name="title">
+     <string>Window</string>
+    </property>
+    <addaction name="actionMinimize"/>
+    <addaction name="actionZoom"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionContact"/>
+    <addaction name="actionTutorials"/>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
+   <addaction name="menuWindow"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionProject"/>
+   <addaction name="actionScene_Tester"/>
+   <addaction name="separator"/>
+   <addaction name="actionZoomIn"/>
+   <addaction name="actionZoomOut"/>
+   <addaction name="actionReset"/>
+   <addaction name="actionBackground"/>
+   <addaction name="separator"/>
+   <addaction name="actionGrid"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionNew_Level">
+   <property name="text">
+    <string>New Level</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionOpen_Level">
+   <property name="text">
+    <string>Open Level</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionNew_Project">
+   <property name="text">
+    <string>New Project</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+N</string>
+   </property>
+  </action>
+  <action name="actionOpen_Project">
+   <property name="text">
+    <string>Open Project</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+O</string>
+   </property>
+  </action>
+  <action name="actionOpen_Recent_Project">
+   <property name="text">
+    <string>Open Recent Project</string>
+   </property>
+  </action>
+  <action name="actionSave_Level">
+   <property name="text">
+    <string>Save Level</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionSave_Level_As">
+   <property name="text">
+    <string>Save Level As</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionSave_As_Assert">
+   <property name="text">
+    <string>Save As Assert</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+A</string>
+   </property>
+  </action>
+  <action name="actionGenerate_Code">
+   <property name="text">
+    <string>Generate Code</string>
+   </property>
+  </action>
+  <action name="actionUndo_transform_LHSprite_node">
+   <property name="text">
+    <string>Undo transform LHSprite node</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z, R</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="text">
+    <string>Redo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Y, Ctrl+Shift+Z</string>
+   </property>
+  </action>
+  <action name="actionCut">
+   <property name="text">
+    <string>Cut</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="actionCut_With_Joints">
+   <property name="text">
+    <string>Cut With Joints</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+X</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="text">
+    <string>Copy</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionCopy_With_Joints">
+   <property name="text">
+    <string>Copy With Joints</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+C</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="text">
+    <string>Paste</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="text">
+    <string>Delete</string>
+   </property>
+   <property name="shortcut">
+    <string>Backspace, Del</string>
+   </property>
+  </action>
+  <action name="actionHide_Toolbar">
+   <property name="text">
+    <string>Hide Toolbar</string>
+   </property>
+  </action>
+  <action name="actionCustomize_Toolbar">
+   <property name="text">
+    <string>Customize Toolbar</string>
+   </property>
+  </action>
+  <action name="actionMinimize">
+   <property name="text">
+    <string>Minimize</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+M</string>
+   </property>
+  </action>
+  <action name="actionZoom">
+   <property name="text">
+    <string>Zoom</string>
+   </property>
+  </action>
+  <action name="actionBring_All_to_Front">
+   <property name="text">
+    <string>Bring All to Front</string>
+   </property>
+  </action>
+  <action name="actionContact">
+   <property name="text">
+    <string>Contact</string>
+   </property>
+  </action>
+  <action name="actionTutorials">
+   <property name="text">
+    <string>Tutorials</string>
+   </property>
+  </action>
+  <action name="actionForum">
+   <property name="text">
+    <string>Forum</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionProject">
+   <property name="text">
+    <string>Project</string>
+   </property>
+  </action>
+  <action name="actionScene_Tester">
+   <property name="text">
+    <string>Scene Tester</string>
+   </property>
+  </action>
+  <action name="actionZoomIn">
+   <property name="text">
+    <string>ZoomIn</string>
+   </property>
+  </action>
+  <action name="actionZoomOut">
+   <property name="text">
+    <string>ZoomOut</string>
+   </property>
+  </action>
+  <action name="actionReset">
+   <property name="text">
+    <string>Reset</string>
+   </property>
+  </action>
+  <action name="actionBackground">
+   <property name="text">
+    <string>Background</string>
+   </property>
+  </action>
+  <action name="actionGrid">
+   <property name="text">
+    <string>Grid</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>LevelEditor</class>
+   <extends>QWidget</extends>
+   <header>leveleditor.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CustomProperties</class>
+   <extends>QWidget</extends>
+   <header>customproperties.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
