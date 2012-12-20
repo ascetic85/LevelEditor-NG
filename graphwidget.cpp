@@ -28,31 +28,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     polygon << QPointF(0, 0) << QPointF(w, h);
     m_scene->addPolygon(polygon);
 
-    m_scene->addRect(0,0,w,h, QPen(Qt::red, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin));
-
-    Sprite *sprite = new Sprite(QPixmap("resource/1.png"), 0, m_scene);
-    sprite->setPos(100, 100);
-
-#if 0
-    QGraphicsPixmapItem* pix = m_scene->addPixmap(QPixmap("resource/1.png"));
-    pix->setPos(100,100);
-
-    pix->setRotation(80);
-
-    QGraphicsPixmapItem* pix2 = new QGraphicsPixmapItem(QPixmap("resource/1.png")
-                                                        , pix, m_scene);
-
-    pix2->setPos(10, 10);
-    pix2->setZValue(1);
-
-    pix2->rotate(-90);
-
-    pix2 = new QGraphicsPixmapItem(QPixmap("resource/1.png")
-                                                        , pix2, m_scene);
-
-    pix2->setPos(30, 30);
-    pix2->setZValue(0);
-#endif
+//    m_scene->addRect(0,0,w,h, QPen(Qt::red, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin));
 }
 
 void GraphWidget::scaleBy(double factor)
@@ -84,19 +60,32 @@ void GraphWidget::wheelEvent(QWheelEvent *event)
 
 void GraphWidget::mousePressEvent(QMouseEvent *event)
 {
-//    Debug() << Q_FUNC_INFO << event->pos();
-    m_pressed = true;
-    m_prePos = event->posF();
+    if (event->button() == Qt::LeftButton) {
+        QGraphicsItem *item = itemAt(event->pos());
+        m_pressed = true;
+        m_prePos = event->posF();
 
-    QGraphicsItem *item = itemAt(event->pos());
-    if (item) {
-        m_selectItem = item;
+        if (event->modifiers() == Qt::ControlModifier) {
+            if (item && !m_selectItems.contains(item)) {
+                m_selectItems.append(item);
+            }
+        }
+        else {
+            if (item) {
+                m_selectItem = item;
+            }
+        }
+    }
+
+    // just for test, add sprite
+    else if (event->button() == Qt::RightButton && event->modifiers() == Qt::NoModifier) {
+        Sprite *sprite = new Sprite(QString("resource/1.png"), 0, m_scene);
+        sprite->setPos(event->pos());
     }
 }
 
-void GraphWidget::mouseReleaseEvent(QMouseEvent */*event*/)
+void GraphWidget::mouseReleaseEvent(QMouseEvent * /*event*/)
 {
-//    Debug() << Q_FUNC_INFO << event->pos();
     m_pressed = false;
 
     m_selectItem = NULL;
@@ -104,12 +93,39 @@ void GraphWidget::mouseReleaseEvent(QMouseEvent */*event*/)
 
 void GraphWidget::mouseMoveEvent(QMouseEvent *event)
 {
-//    Debug() << Q_FUNC_INFO << event->pos() << this->mapToScene(event->pos());
+    if (m_pressed) {
+        // for one
+        if (m_selectItem) {
+            QPointF delta = event->posF() - m_prePos + m_selectItem->pos();
+            m_prePos = event->posF();
+            m_selectItem->setPos(delta);
+        }
 
-    if (m_selectItem) {
-        QPointF delta = event->posF() - m_prePos + m_selectItem->pos();
-        m_prePos = event->posF();
-        m_selectItem->setPos(delta);
+        // for some
+        if (event->modifiers() == Qt::ControlModifier && !m_selectItems.isEmpty()) {
+            foreach (QGraphicsItem* it, m_selectItems) {
+                QPointF delta = event->posF() - m_prePos + it->pos();
+                it->setPos(delta);
+            }
+            m_prePos = event->posF();
+        }
     }
 }
+
+void GraphWidget::keyReleaseEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Control) {
+        Debug() << "Clear all selected items";
+        m_selectItems.clear();
+    }
+}
+
+void GraphWidget::drawForeground(QPainter *painter, const QRectF &rect)
+{
+    QGraphicsView::drawForeground(painter, rect);
+
+    painter->setPen(QPen(Qt::red));
+    painter->drawRect(sceneRect());
+}
+
 

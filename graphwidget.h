@@ -24,6 +24,10 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
 
+    virtual void keyReleaseEvent(QKeyEvent *event);
+
+    virtual void drawForeground(QPainter *painter, const QRectF &rect);
+
 protected:
     QGraphicsScene* m_scene;
 
@@ -32,6 +36,7 @@ protected:
     qreal m_scaleFactor;
     QPointF m_prePos;
     QGraphicsItem *m_selectItem;
+    QVector<QGraphicsItem*> m_selectItems;
 };
 
 #endif // GRAPHWIDGET_H
