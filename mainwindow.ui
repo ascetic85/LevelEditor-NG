@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="LevelEditor" name="levelEditor">
        <attribute name="title">
@@ -33,7 +33,7 @@
         <string>Custom Properties</string>
        </attribute>
       </widget>
-      <widget class="QWidget" name="supportingCode">
+      <widget class="SupportingCode" name="supportingCode">
        <attribute name="title">
         <string>Supporint Code</string>
        </attribute>
@@ -58,7 +58,7 @@
      <x>0</x>
      <y>0</y>
      <width>560</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -367,6 +367,12 @@
    <class>CustomProperties</class>
    <extends>QWidget</extends>
    <header>customproperties.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SupportingCode</class>
+   <extends>QWidget</extends>
+   <header>supportingcode.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
