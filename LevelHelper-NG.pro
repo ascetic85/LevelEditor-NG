@@ -14,12 +14,20 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    customproperties.cpp
+    customproperties.cpp \
+    graphwidget.cpp \
+    supportingcode.cpp
 
 HEADERS  += mainwindow.h \
     leveleditor.h \
-    customproperties.h
+    customproperties.h \
+    graphwidget.h \
+    supportingcode.h
 
 FORMS    += mainwindow.ui \
     leveleditor.ui \
-    customproperties.ui
+    customproperties.ui \
+    supportingcode.ui
+
+OTHER_FILES += \
+    README.md
