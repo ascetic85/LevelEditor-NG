@@ -28,7 +28,10 @@ GraphWidget::GraphWidget(QWidget *parent)
     polygon << QPointF(0, 0) << QPointF(w, h);
     m_scene->addPolygon(polygon);
 
+    init();
 //    m_scene->addRect(0,0,w,h, QPen(Qt::red, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin));
+
+    setUpright(false, iPhone480x320);
 }
 
 void GraphWidget::scaleBy(double factor)
@@ -44,6 +47,33 @@ void GraphWidget::zoomIn()
 void GraphWidget::zoomOut()
 {
     scaleBy(1.0 / 1.1);
+}
+
+void GraphWidget::setUpright(bool yes, DeviceType type)
+{
+    if (yes) {
+        m_bgFrame.load(m_frames.value(type));
+        m_frameStartPoint = m_framePoint.value(type);
+    }
+    else {
+        m_bgFrame.load(m_framevs.value(type));
+        m_frameStartPoint = m_framevPoint.value(type);
+    }
+}
+
+void GraphWidget::init()
+{
+    m_frames.insert(iPhone480x320, "resource/4frame.png");
+    m_frames.insert(iPhone960x640, "resource/fframe@2x.png");
+
+    m_framevs.insert(iPhone480x320, "resource/4frame-v.png");
+    m_framevs.insert(iPhone960x640, "resource/fframe@2x-v.png");
+
+    m_framePoint.insert(iPhone480x320, QPoint(0,0));
+    m_framePoint.insert(iPhone480x320, QPoint(0,0));
+
+    m_framevPoint.insert(iPhone480x320, QPoint(-119,-23));
+    m_framevPoint.insert(iPhone960x640, QPoint(0,0));
 }
 
 void GraphWidget::wheelEvent(QWheelEvent *event)
@@ -117,6 +147,18 @@ void GraphWidget::keyReleaseEvent(QKeyEvent *event)
     if (event->key() == Qt::Key_Control) {
         Debug() << "Clear all selected items";
         m_selectItems.clear();
+    }
+}
+
+void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
+{
+    QGraphicsView::drawBackground(painter, rect);
+
+//    painter->setPen(QPen(Qt::red));
+//    painter->drawEllipse(100,100,100,100);
+
+    if (!m_bgFrame.isNull()) {
+        painter->drawPixmap(m_frameStartPoint, m_bgFrame);
     }
 }
 
