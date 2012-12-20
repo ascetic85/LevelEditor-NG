@@ -129,6 +129,13 @@
             </widget>
            </item>
            <item>
+            <widget class="QToolButton" name="resToolButton">
+             <property name="text">
+              <string>Resource</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <spacer name="horizontalSpacer_3">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
@@ -144,26 +151,13 @@
           </layout>
          </item>
          <item>
-          <widget class="QTreeWidget" name="resourceTree">
+          <widget class="QTreeView" name="resourceTree">
            <property name="maximumSize">
             <size>
              <width>300</width>
              <height>16777215</height>
             </size>
            </property>
-           <property name="columnCount">
-            <number>2</number>
-           </property>
-           <column>
-            <property name="text">
-             <string>Files</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Z</string>
-            </property>
-           </column>
           </widget>
          </item>
          <item>

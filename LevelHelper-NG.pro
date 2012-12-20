@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -16,13 +16,17 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     customproperties.cpp \
     graphwidget.cpp \
-    supportingcode.cpp
+    supportingcode.cpp \
+    leveleditor.cpp \
+    sprite.cpp
 
 HEADERS  += mainwindow.h \
     leveleditor.h \
     customproperties.h \
     graphwidget.h \
-    supportingcode.h
+    supportingcode.h \
+    Debug.h \
+    sprite.h
 
 FORMS    += mainwindow.ui \
     leveleditor.ui \
