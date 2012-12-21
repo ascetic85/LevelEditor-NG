@@ -53,6 +53,9 @@ protected:
      */
     virtual void drawForeground(QPainter *painter, const QRectF &rect);
 
+    // custom function
+    void showMouseRect(int w, int h);
+
 protected:
     QGraphicsScene*             m_scene;
     QGraphicsRectItem           m_mouseRectItem;

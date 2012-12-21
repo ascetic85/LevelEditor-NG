@@ -78,8 +78,11 @@ void GraphWidget::init()
     m_framevPoint.insert(iPhone480x320, QPoint(-119,-23));
     m_framevPoint.insert(iPhone960x640, QPoint(0,0));
 
+    //
     m_mouseRectItem.setRect(0,0,1,1);
+    m_mouseRectItem.setBrush(QBrush(QColor(200,200,200,100)));
     m_mouseRectItem.hide();
+    m_mouseRectItem.setZValue(100);
     m_scene->addItem(&m_mouseRectItem);
 }
 
@@ -164,10 +167,7 @@ void GraphWidget::mouseMoveEvent(QMouseEvent *event)
 
         // draw mouse rect
         QPointF p = mapToScene(event->pos());
-        m_mouseRectItem.setRect(QRect(m_mouseStartPoint.x(), m_mouseStartPoint.y()
-                                      , p.x()-m_mouseStartPoint.x()
-                                      , p.y()-m_mouseStartPoint.y()));
-
+        showMouseRect(p.x() - m_mouseStartPoint.x(), p.y() - m_mouseStartPoint.y());
     }
 
     QGraphicsView::mouseMoveEvent(event);
@@ -208,4 +208,9 @@ void GraphWidget::drawForeground(QPainter *painter, const QRectF &rect)
     painter->setPen(QPen(Qt::red));
     painter->drawRect(sceneRect());
 
+}
+
+void GraphWidget::showMouseRect(int w, int h)
+{
+    m_mouseRectItem.setRect(m_mouseStartPoint.x(), m_mouseStartPoint.y(),w,h);
 }
