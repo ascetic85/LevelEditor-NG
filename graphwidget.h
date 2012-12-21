@@ -59,7 +59,8 @@ protected:
     void showMouseRect(QPoint start, QPoint end);
 
     void hideControllerItem();
-    void showControllerItem(QPoint center);
+    void showControllerItem(QPointF pos);
+    void showControllerItem(QPoint pos);
 
 protected:
     QGraphicsScene*             m_scene;

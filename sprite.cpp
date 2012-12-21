@@ -7,6 +7,20 @@
 #include "Debug.h"
 
 
+class PointCtl : public QObject, public QGraphicsRectItem
+{
+public:
+    PointCtl(QGraphicsItem* parent = 0, QGraphicsScene *scene = 0)
+        : QGraphicsRectItem(parent, scene)
+    {
+//        setAcceptedMouseButtons(Qt::NoButton);
+    }
+
+
+Q_SIGNALS:
+    void offset(QPointF);
+};
+
 Sprite::Sprite(QGraphicsItem* parent, QGraphicsScene* scene)
     : QGraphicsPixmapItem(parent, scene)
 {
@@ -44,6 +58,10 @@ void Sprite::init()
 {
     setCacheMode(QGraphicsItem::ItemCoordinateCache);
     m_focusLevel = Sprite::None;
+
+    PointCtl *pCtl = new PointCtl(this, 0);
+    pCtl->setPos(10,10);
+    pCtl->setRect(0,0,10,10);
 }
 
 void Sprite::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -56,10 +74,10 @@ void Sprite::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
         painter->drawRect(this->pixmap().rect());
     } else if (m_focusLevel == Sprite::SelectAndFocus) {
 
+
     } else if (m_focusLevel == Sprite::SelectNoFocus) {
 
     }
-
 }
 
 void Sprite::mousePressEvent(QGraphicsSceneMouseEvent *event)

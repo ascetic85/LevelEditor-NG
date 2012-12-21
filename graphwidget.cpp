@@ -85,8 +85,8 @@ void GraphWidget::init()
     m_scene->addItem(&m_mouseRectItem);
 
     // controller
-    m_controllerItem.setRect(0,0,1,1);
-    m_controllerItem.setBrush(QBrush(QColor(200,200,200,100)));
+    m_controllerItem.setRect(0,0,100,100);
+    m_controllerItem.setBrush(QBrush(QColor(255,0,0,100)));
     m_controllerItem.hide();
     m_controllerItem.setZValue(100);
     m_scene->addItem(&m_controllerItem);
@@ -129,7 +129,7 @@ void GraphWidget::mousePressEvent(QMouseEvent *event)
         else {
             if (item) {
                 item->grabMouse();
-                showControllerItem(event->pos());
+//                showControllerItem(mapToScene(event->pos()));
             } else {
                 m_mouseRectItem.show();
                 hideControllerItem();
@@ -140,7 +140,8 @@ void GraphWidget::mousePressEvent(QMouseEvent *event)
     // just for test, add sprite
     else if (event->button() == Qt::RightButton && event->modifiers() == Qt::NoModifier) {
         Sprite *sprite = new Sprite(QString("resource/1.png"), 0, m_scene);
-        sprite->setPos(mapToScene(event->pos()));
+        QSizeF s = sprite->boundingRect().size();
+        sprite->setPos(mapToScene(event->pos()) - QPoint(s.width()/2, s.height()/2));
     }
 
     QGraphicsView::mousePressEvent(event);
@@ -154,8 +155,10 @@ void GraphWidget::mouseReleaseEvent(QMouseEvent * event)
     QGraphicsView::mouseReleaseEvent(event);
 }
 
+#include <QTime>
 void GraphWidget::mouseMoveEvent(QMouseEvent *event)
 {
+    Debug() << Q_FUNC_INFO << m_pressed << QTime::currentTime();
     if (m_pressed) {
         // for some
         if (event->modifiers() == Qt::ControlModifier && !m_selectItems.isEmpty()) {
@@ -166,7 +169,6 @@ void GraphWidget::mouseMoveEvent(QMouseEvent *event)
             m_prePos = event->posF();
         }
 
-        // draw mouse rect
         QPointF p = mapToScene(event->pos());
         showMouseRect(m_mouseStartPoint.toPoint(), p.toPoint());
     }
@@ -236,7 +238,14 @@ void GraphWidget::hideControllerItem()
     m_controllerItem.hide();
 }
 
-void GraphWidget::showControllerItem(QPoint center)
+void GraphWidget::showControllerItem(QPointF pos)
 {
-    m_controllerItem.setPos(center);
+    m_controllerItem.show();
+    m_controllerItem.setPos(pos);
+}
+
+void GraphWidget::showControllerItem(QPoint pos)
+{
+    m_controllerItem.show();
+    m_controllerItem.setPos(pos);
 }
