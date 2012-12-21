@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     source/FileWatcherOSX.cpp \
     source/FileWatcherLinux.cpp \
     source/FileWatcher.cpp \
-    resource.cpp
+    resource.cpp \
+    config.cpp
 
 HEADERS  += mainwindow.h \
     leveleditor.h \
@@ -36,7 +37,8 @@ HEADERS  += mainwindow.h \
     Debug.h \
     sprite.h \
     watcher.h \
-    resource.h
+    resource.h \
+    config.h
 
 FORMS    += mainwindow.ui \
     leveleditor.ui \
