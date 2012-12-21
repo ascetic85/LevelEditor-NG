@@ -6,6 +6,7 @@
 #include <QApplication>
 
 #include "sprite.h"
+#include "config.h"
 
 #include "Debug.h"
 
@@ -15,8 +16,9 @@ GraphWidget::GraphWidget(QWidget *parent)
     , m_scaleFactor(1)
     , m_selectItem(NULL)
 {
-    int w(480);
-    int h(320);
+    QSettings settings(Config::config(), Config::format());
+    int w = settings.value(Config::editorw, Config::w).toReal();
+    int h = settings.value(Config::editorh, Config::h).toReal();
 
     this->setScene(m_scene);
     this->setSceneRect(0,0,w,h);
@@ -33,6 +35,7 @@ GraphWidget::GraphWidget(QWidget *parent)
 
     setUpright(false, iPhone480x320);
 }
+
 
 void GraphWidget::scaleBy(double factor)
 {
@@ -74,6 +77,7 @@ void GraphWidget::init()
 
     m_framevPoint.insert(iPhone480x320, QPoint(-119,-23));
     m_framevPoint.insert(iPhone960x640, QPoint(0,0));
+
 }
 
 void GraphWidget::wheelEvent(QWheelEvent *event)
@@ -86,10 +90,13 @@ void GraphWidget::wheelEvent(QWheelEvent *event)
      {
          QGraphicsView::wheelEvent(event);
      }
+
+    QGraphicsView::wheelEvent(event);
 }
 
 void GraphWidget::mousePressEvent(QMouseEvent *event)
 {
+
     if (event->button() == Qt::LeftButton) {
         QGraphicsItem *item = itemAt(event->pos());
         m_pressed = true;
@@ -110,15 +117,19 @@ void GraphWidget::mousePressEvent(QMouseEvent *event)
     // just for test, add sprite
     else if (event->button() == Qt::RightButton && event->modifiers() == Qt::NoModifier) {
         Sprite *sprite = new Sprite(QString("resource/1.png"), 0, m_scene);
-        sprite->setPos(event->pos());
+        sprite->setPos(mapToScene(event->pos()));
     }
+
+    QGraphicsView::mousePressEvent(event);
 }
 
-void GraphWidget::mouseReleaseEvent(QMouseEvent * /*event*/)
+void GraphWidget::mouseReleaseEvent(QMouseEvent * event)
 {
     m_pressed = false;
 
     m_selectItem = NULL;
+
+    QGraphicsView::mouseReleaseEvent(event);
 }
 
 void GraphWidget::mouseMoveEvent(QMouseEvent *event)
@@ -140,6 +151,8 @@ void GraphWidget::mouseMoveEvent(QMouseEvent *event)
             m_prePos = event->posF();
         }
     }
+
+    QGraphicsView::mouseMoveEvent(event);
 }
 
 void GraphWidget::keyReleaseEvent(QKeyEvent *event)
@@ -147,6 +160,16 @@ void GraphWidget::keyReleaseEvent(QKeyEvent *event)
     if (event->key() == Qt::Key_Control) {
         Debug() << "Clear all selected items";
         m_selectItems.clear();
+    }
+
+    QGraphicsView::keyReleaseEvent(event);
+}
+
+void GraphWidget::paintEvent(QPaintEvent * event)
+{
+    QGraphicsView::paintEvent(event);
+
+    if (m_pressed) {
     }
 }
 
@@ -166,8 +189,8 @@ void GraphWidget::drawForeground(QPainter *painter, const QRectF &rect)
 {
     QGraphicsView::drawForeground(painter, rect);
 
+    // view rect
     painter->setPen(QPen(Qt::red));
     painter->drawRect(sceneRect());
+
 }
-
-

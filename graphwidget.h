@@ -2,6 +2,7 @@
 #define GRAPHWIDGET_H
 
 #include <QGraphicsView>
+#include <QGraphicsRectItem>
 #include <QRectF>
 #include <QHash>
 
@@ -35,27 +36,45 @@ protected:
 
     virtual void keyReleaseEvent(QKeyEvent *event);
 
+    virtual void paintEvent(QPaintEvent *event);
+
+
+    /**
+     * @brief draw the iphone frame
+     * @param painter
+     * @param rect
+     */
     virtual void drawBackground(QPainter *painter, const QRectF &rect);
+
+    /**
+     * @brief draw the view rect & the mouse select rect
+     * @param painter
+     * @param rect
+     */
     virtual void drawForeground(QPainter *painter, const QRectF &rect);
 
 protected:
-    QGraphicsScene* m_scene;
+    QGraphicsScene*             m_scene;
+    QGraphicsRectItem           m_mouseRectItem;
 
-    QRectF m_rect;
-    bool m_pressed;
-    qreal m_scaleFactor;
-    QPointF m_prePos;
-    QGraphicsItem *m_selectItem;
-    QVector<QGraphicsItem*> m_selectItems;
+    QRectF                      m_rect;
+    bool                        m_pressed;
+    qreal                       m_scaleFactor;
+    QPointF                     m_prePos;
+    QGraphicsItem               *m_selectItem;
+    QVector<QGraphicsItem*>     m_selectItems;
 
-    QPixmap m_bgFrame;
+    QPixmap                     m_bgFrame;
 
     // for show background frame
-    QHash<DeviceType, QString> m_frames;
-    QHash<DeviceType, QString> m_framevs;
+    QHash<DeviceType, QString>  m_frames;
+    QHash<DeviceType, QString>  m_framevs;
     QHash<DeviceType, QPoint>   m_framePoint;
     QHash<DeviceType, QPoint>   m_framevPoint;
-    QPoint              m_frameStartPoint;
+    QPoint                      m_frameStartPoint;
+
+    // for show mouse rect
+    QPointF                     m_mouseStartPoint;
 };
 
 #endif // GRAPHWIDGET_H

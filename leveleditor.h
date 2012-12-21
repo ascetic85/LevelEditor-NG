@@ -20,8 +20,6 @@ public:
 
     ~LevelEditor();
 
-    void setUseOpenGL();
-
     void scale(qreal f);
 
 private slots:

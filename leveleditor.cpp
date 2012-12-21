@@ -7,9 +7,10 @@
 #include <QFileSystemModel>
 #include <QFileSystemWatcher>
 #include <QFileInfo>
+#include <QSettings>
 
 #include "resource.h"
-
+#include "config.h"
 #include "Debug.h"
 
 
@@ -20,6 +21,12 @@ LevelEditor::LevelEditor(QWidget *parent)
     , m_watcher(0)
 {
     ui->setupUi(this);
+
+    // load settings
+    QSettings settings(Config::config(), Config::format());
+    if (settings.value("editor/opengl", false).toBool()) {
+        ui->graphicsView->setViewport(new QGLWidget());
+    }
 }
 
 LevelEditor::~LevelEditor()
@@ -27,12 +34,6 @@ LevelEditor::~LevelEditor()
     SAFE_DELETE(m_fileModel);
     SAFE_DELETE(m_watcher);
     SAFE_DELETE(ui);
-}
-
-void LevelEditor::setUseOpenGL()
-{
-    ui->graphicsView->setViewport(new QGLWidget());
-    //    Q_ASSERT(!"LevelEditor::setUseOpenGL is not complete");
 }
 
 void LevelEditor::scale(qreal )

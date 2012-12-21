@@ -5,8 +5,8 @@
 
 #define Debug qDebug
 
-#define SAFE_DELETE(x) if (x) delete x;
+#define SAFE_DELETE(x) if (x)  {delete x; x = NULL; }
 
-#define SAFE_FREE(x) if (x) free(x);
+#define SAFE_FREE(x) if (x) { free(x), x = NULL} ;
 
 #endif // DEBUG_H
