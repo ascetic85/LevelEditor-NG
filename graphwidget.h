@@ -10,6 +10,8 @@ QT_BEGIN_NAMESPACE
 class QGraphicsScene;
 QT_END_NAMESPACE
 
+#include "controller.h"
+
 class GraphWidget : public QGraphicsView
 {
     Q_OBJECT
@@ -56,15 +58,18 @@ protected:
     // custom function
     void showMouseRect(QPoint start, QPoint end);
 
+    void hideControllerItem();
+    void showControllerItem(QPoint center);
+
 protected:
     QGraphicsScene*             m_scene;
     QGraphicsRectItem           m_mouseRectItem;
+    Controller                  m_controllerItem;
 
     QRectF                      m_rect;
     bool                        m_pressed;
     qreal                       m_scaleFactor;
     QPointF                     m_prePos;
-    QGraphicsItem               *m_selectItem;
     QVector<QGraphicsItem*>     m_selectItems;
 
     QPixmap                     m_bgFrame;

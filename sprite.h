@@ -45,10 +45,16 @@ protected:
      */
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+
 protected:
     /// property
     FocusLevel m_focusLevel;
     /// property end
+
+    QPoint m_prePos;
 };
 
 #endif // SPRITE_H

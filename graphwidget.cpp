@@ -14,7 +14,6 @@ GraphWidget::GraphWidget(QWidget *parent)
     : QGraphicsView(parent)
     , m_scene(new QGraphicsScene())
     , m_scaleFactor(1)
-    , m_selectItem(NULL)
 {
     QSettings settings(Config::config(), Config::format());
     int w = settings.value(Config::editorw, Config::w).toReal();
@@ -78,12 +77,19 @@ void GraphWidget::init()
     m_framevPoint.insert(iPhone480x320, QPoint(-119,-23));
     m_framevPoint.insert(iPhone960x640, QPoint(0,0));
 
-    //
+    // mouse rect
     m_mouseRectItem.setRect(0,0,1,1);
     m_mouseRectItem.setBrush(QBrush(QColor(200,200,200,100)));
     m_mouseRectItem.hide();
     m_mouseRectItem.setZValue(100);
     m_scene->addItem(&m_mouseRectItem);
+
+    // controller
+    m_controllerItem.setRect(0,0,1,1);
+    m_controllerItem.setBrush(QBrush(QColor(200,200,200,100)));
+    m_controllerItem.hide();
+    m_controllerItem.setZValue(100);
+    m_scene->addItem(&m_controllerItem);
 }
 
 void GraphWidget::wheelEvent(QWheelEvent *event)
@@ -114,15 +120,19 @@ void GraphWidget::mousePressEvent(QMouseEvent *event)
         if (event->modifiers() == Qt::ControlModifier) {
             if (item && !m_selectItems.contains(item)) {
                 m_selectItems.append(item);
+                m_mouseRectItem.hide();
             } else {
                 m_mouseRectItem.show();
             }
+            hideControllerItem();
         }
         else {
             if (item) {
-                m_selectItem = item;
+                item->grabMouse();
+                showControllerItem(event->pos());
             } else {
                 m_mouseRectItem.show();
+                hideControllerItem();
             }
         }
     }
@@ -140,8 +150,6 @@ void GraphWidget::mouseReleaseEvent(QMouseEvent * event)
 {
     m_pressed = false;
 
-    m_selectItem = NULL;
-
     m_mouseRectItem.hide();
     QGraphicsView::mouseReleaseEvent(event);
 }
@@ -149,13 +157,6 @@ void GraphWidget::mouseReleaseEvent(QMouseEvent * event)
 void GraphWidget::mouseMoveEvent(QMouseEvent *event)
 {
     if (m_pressed) {
-        // for one
-        if (m_selectItem) {
-            QPointF delta = event->posF() - m_prePos + m_selectItem->pos();
-            m_prePos = event->posF();
-            m_selectItem->setPos(delta);
-        }
-
         // for some
         if (event->modifiers() == Qt::ControlModifier && !m_selectItems.isEmpty()) {
             foreach (QGraphicsItem* it, m_selectItems) {
@@ -228,4 +229,14 @@ void GraphWidget::showMouseRect(QPoint start, QPoint end)
     if (h < 0) y = end.y();
 
     m_mouseRectItem.setRect(x,y, abs(w),abs(h));
+}
+
+void GraphWidget::hideControllerItem()
+{
+    m_controllerItem.hide();
+}
+
+void GraphWidget::showControllerItem(QPoint center)
+{
+    m_controllerItem.setPos(center);
 }

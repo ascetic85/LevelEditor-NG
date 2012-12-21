@@ -61,3 +61,19 @@ void Sprite::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     }
 
 }
+
+void Sprite::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    m_prePos = event->pos().toPoint();
+}
+
+void Sprite::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    QPoint delta = event->pos().toPoint() - m_prePos;
+    setPos(pos()+delta);
+}
+
+void Sprite::mouseReleaseEvent(QGraphicsSceneMouseEvent * /*event*/)
+{
+    ungrabMouse();
+}
