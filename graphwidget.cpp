@@ -167,7 +167,7 @@ void GraphWidget::mouseMoveEvent(QMouseEvent *event)
 
         // draw mouse rect
         QPointF p = mapToScene(event->pos());
-        showMouseRect(p.x() - m_mouseStartPoint.x(), p.y() - m_mouseStartPoint.y());
+        showMouseRect(m_mouseStartPoint.toPoint(), p.toPoint());
     }
 
     QGraphicsView::mouseMoveEvent(event);
@@ -208,9 +208,24 @@ void GraphWidget::drawForeground(QPainter *painter, const QRectF &rect)
     painter->setPen(QPen(Qt::red));
     painter->drawRect(sceneRect());
 
+#if 0
+    // draw coor
+    QPoint offset(-5,-5);
+    painter->setPen(QPen(QBrush(Qt::red), 3));
+    painter->drawLine(sceneRect().bottomLeft()+offset, offset);
+    painter->drawLine(sceneRect().bottomLeft()-offset, sceneRect().bottomRight()-offset);
+#endif
 }
 
-void GraphWidget::showMouseRect(int w, int h)
+void GraphWidget::showMouseRect(QPoint start, QPoint end)
 {
-    m_mouseRectItem.setRect(m_mouseStartPoint.x(), m_mouseStartPoint.y(),w,h);
+    int x = start.x();
+    int y = start.y();
+    int w = end.x() - start.x();
+    int h = end.y() - start.y();
+
+    if (w < 0) x = end.x();
+    if (h < 0) y = end.y();
+
+    m_mouseRectItem.setRect(x,y, abs(w),abs(h));
 }
