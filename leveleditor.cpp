@@ -2,9 +2,13 @@
 
 #include <QtOpenGL/QGLWidget>
 #include <QFileDialog>
-#include <QFileSystemModel>
 #include <QTreeWidget>
+
+#include <QFileSystemModel>
+#include <QFileSystemWatcher>
 #include <QFileInfo>
+
+#include "resource.h"
 
 #include "Debug.h"
 
@@ -13,13 +17,16 @@ LevelEditor::LevelEditor(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::LevelEditor() )
     , m_fileModel(0)
+    , m_watcher(0)
 {
     ui->setupUi(this);
 }
 
 LevelEditor::~LevelEditor()
 {
-    delete ui;
+    SAFE_DELETE(m_fileModel);
+    SAFE_DELETE(m_watcher);
+    SAFE_DELETE(ui);
 }
 
 void LevelEditor::setUseOpenGL()
@@ -50,7 +57,30 @@ void LevelEditor::on_resToolButton_clicked()
                                                     | QFileDialog::DontResolveSymlinks);
     Debug() << dir;
     if (dir.isEmpty() | dir.isNull()) return;
+
+    if (!m_resource)
+        m_resource = new Resource();
+
+    if (!m_fileModel) {
+        m_fileModel = new QFileSystemModel();
+        ui->resourceTree->setModel(m_fileModel);
+    }
+
+    m_fileModel->setRootPath(dir);
+    m_resource->setResource(dir);
+    ui->resourceTree->setRootIndex(m_fileModel->index(dir));
 }
+
+void LevelEditor::onFilechanged(QString file)
+{
+    Debug() << Q_FUNC_INFO << file;
+}
+
+void LevelEditor::onDirectoryChaned(QString dir)
+{
+    Debug() << Q_FUNC_INFO << dir << m_watcher->files() << m_watcher->directories();
+}
+
 
 
 

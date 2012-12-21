@@ -11,6 +11,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = LevelHelper-NG
 TEMPLATE = app
 
+#DEFINES += UNICODE
+INCLUDEPATH += ./include
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -18,7 +20,13 @@ SOURCES += main.cpp\
     graphwidget.cpp \
     supportingcode.cpp \
     leveleditor.cpp \
-    sprite.cpp
+    sprite.cpp \
+    watcher.cpp \
+    source/FileWatcherWin32.cpp \
+    source/FileWatcherOSX.cpp \
+    source/FileWatcherLinux.cpp \
+    source/FileWatcher.cpp \
+    resource.cpp
 
 HEADERS  += mainwindow.h \
     leveleditor.h \
@@ -26,7 +34,9 @@ HEADERS  += mainwindow.h \
     graphwidget.h \
     supportingcode.h \
     Debug.h \
-    sprite.h
+    sprite.h \
+    watcher.h \
+    resource.h
 
 FORMS    += mainwindow.ui \
     leveleditor.ui \
