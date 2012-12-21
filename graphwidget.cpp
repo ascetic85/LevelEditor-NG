@@ -78,6 +78,9 @@ void GraphWidget::init()
     m_framevPoint.insert(iPhone480x320, QPoint(-119,-23));
     m_framevPoint.insert(iPhone960x640, QPoint(0,0));
 
+    m_mouseRectItem.setRect(0,0,1,1);
+    m_mouseRectItem.hide();
+    m_scene->addItem(&m_mouseRectItem);
 }
 
 void GraphWidget::wheelEvent(QWheelEvent *event)
@@ -102,14 +105,21 @@ void GraphWidget::mousePressEvent(QMouseEvent *event)
         m_pressed = true;
         m_prePos = event->posF();
 
+        m_mouseStartPoint = mapToScene(event->pos());
+        m_mouseRectItem.setRect(m_mouseRectItem.x(), m_mouseRectItem.y(),1,1);
+
         if (event->modifiers() == Qt::ControlModifier) {
             if (item && !m_selectItems.contains(item)) {
                 m_selectItems.append(item);
+            } else {
+                m_mouseRectItem.show();
             }
         }
         else {
             if (item) {
                 m_selectItem = item;
+            } else {
+                m_mouseRectItem.show();
             }
         }
     }
@@ -129,6 +139,7 @@ void GraphWidget::mouseReleaseEvent(QMouseEvent * event)
 
     m_selectItem = NULL;
 
+    m_mouseRectItem.hide();
     QGraphicsView::mouseReleaseEvent(event);
 }
 
@@ -150,6 +161,13 @@ void GraphWidget::mouseMoveEvent(QMouseEvent *event)
             }
             m_prePos = event->posF();
         }
+
+        // draw mouse rect
+        QPointF p = mapToScene(event->pos());
+        m_mouseRectItem.setRect(QRect(m_mouseStartPoint.x(), m_mouseStartPoint.y()
+                                      , p.x()-m_mouseStartPoint.x()
+                                      , p.y()-m_mouseStartPoint.y()));
+
     }
 
     QGraphicsView::mouseMoveEvent(event);
@@ -168,9 +186,6 @@ void GraphWidget::keyReleaseEvent(QKeyEvent *event)
 void GraphWidget::paintEvent(QPaintEvent * event)
 {
     QGraphicsView::paintEvent(event);
-
-    if (m_pressed) {
-    }
 }
 
 void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
