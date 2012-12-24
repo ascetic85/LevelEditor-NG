@@ -111,11 +111,13 @@ void GraphWidget::mousePressEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton) {
         QGraphicsItem *item = itemAt(event->pos());
-        m_pressed = true;
+
         m_prePos = event->posF();
 
         m_mouseStartPoint = mapToScene(event->pos());
         m_mouseRectItem.setRect(m_mouseRectItem.x(), m_mouseRectItem.y(),1,1);
+
+        if (m_selectItems.count()) m_pressed = true;
 
         if (event->modifiers() == Qt::ControlModifier) {
             if (item && !m_selectItems.contains(item)) {
@@ -128,6 +130,7 @@ void GraphWidget::mousePressEvent(QMouseEvent *event)
         }
         else {
             if (item) {
+                m_pressed = true;
                 item->grabMouse();
 //                showControllerItem(mapToScene(event->pos()));
             } else {
@@ -158,7 +161,6 @@ void GraphWidget::mouseReleaseEvent(QMouseEvent * event)
 #include <QTime>
 void GraphWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    Debug() << Q_FUNC_INFO << m_pressed << QTime::currentTime();
     if (m_pressed) {
         // for some
         if (event->modifiers() == Qt::ControlModifier && !m_selectItems.isEmpty()) {
@@ -168,7 +170,7 @@ void GraphWidget::mouseMoveEvent(QMouseEvent *event)
             }
             m_prePos = event->posF();
         }
-
+    } else {
         QPointF p = mapToScene(event->pos());
         showMouseRect(m_mouseStartPoint.toPoint(), p.toPoint());
     }
@@ -179,7 +181,6 @@ void GraphWidget::mouseMoveEvent(QMouseEvent *event)
 void GraphWidget::keyReleaseEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Control) {
-        Debug() << "Clear all selected items";
         m_selectItems.clear();
     }
 
