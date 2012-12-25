@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     resource.cpp \
     config.cpp \
     controller.cpp \
-    gridconfig.cpp
+    gridconfig.cpp \
+    editorconfig.cpp
 
 HEADERS  += mainwindow.h \
     leveleditor.h \
@@ -42,13 +43,15 @@ HEADERS  += mainwindow.h \
     resource.h \
     config.h \
     controller.h \
-    gridconfig.h
+    gridconfig.h \
+    editorconfig.h
 
 FORMS    += mainwindow.ui \
     leveleditor.ui \
     customproperties.ui \
     supportingcode.ui \
-    gridconfig.ui
+    gridconfig.ui \
+    editorconfig.ui
 
 OTHER_FILES += \
     README.md

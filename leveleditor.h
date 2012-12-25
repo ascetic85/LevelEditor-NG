@@ -23,6 +23,10 @@ public:
     void scale(qreal f);
 
 public Q_SLOTS:
+    /**
+     * @brief show grid if @n > 1 & @n < 50
+     * @param n
+     */
     void showGrid(int n);
 
 

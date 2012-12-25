@@ -42,6 +42,9 @@ void LevelEditor::scale(qreal )
 
 void LevelEditor::showGrid(int n)
 {
+    if (n > 1 && n < 50) {
+
+    }
 }
 
 /**
