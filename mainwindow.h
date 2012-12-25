@@ -20,6 +20,9 @@ private slots:
 
     void on_actionReset_triggered();
 
+    void on_actionGrid_triggered();
+
+
 private:
     Ui::MainWindow *ui;
 };

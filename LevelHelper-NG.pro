@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     source/FileWatcher.cpp \
     resource.cpp \
     config.cpp \
-    controller.cpp
+    controller.cpp \
+    gridconfig.cpp
 
 HEADERS  += mainwindow.h \
     leveleditor.h \
@@ -40,12 +41,14 @@ HEADERS  += mainwindow.h \
     watcher.h \
     resource.h \
     config.h \
-    controller.h
+    controller.h \
+    gridconfig.h
 
 FORMS    += mainwindow.ui \
     leveleditor.ui \
     customproperties.ui \
-    supportingcode.ui
+    supportingcode.ui \
+    gridconfig.ui
 
 OTHER_FILES += \
     README.md

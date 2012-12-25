@@ -22,7 +22,11 @@ public:
 
     void scale(qreal f);
 
-private slots:
+public Q_SLOTS:
+    void showGrid(int n);
+
+
+private Q_SLOTS:
     void on_resToolButton_clicked();
 
     /**

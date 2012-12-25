@@ -2,10 +2,11 @@
 #include "ui_mainwindow.h"
 
 #include "config.h"
+#include "gridconfig.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
 {
     Config::defaultSettings();
 
@@ -25,3 +26,11 @@ void MainWindow::on_actionReset_triggered()
 {
     ui->levelEditor->scale(1.0);
 }
+
+void MainWindow::on_actionGrid_triggered()
+{
+    GridConfig config(this);
+    connect(&config, SIGNAL(gridChanged(int)), ui->levelEditor, SLOT(showGrid(int)));
+    config.exec();
+}
+

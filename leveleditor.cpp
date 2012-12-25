@@ -40,6 +40,10 @@ void LevelEditor::scale(qreal )
 {
 }
 
+void LevelEditor::showGrid(int n)
+{
+}
+
 /**
  * @brief LevelEditor::on_resToolButton_clicked
  * get the resource's directory (include subdirector),
