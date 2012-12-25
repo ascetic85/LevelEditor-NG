@@ -3,6 +3,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
+#include <QKeyEvent>
 
 #include "Debug.h"
 
@@ -95,3 +96,4 @@ void Sprite::mouseReleaseEvent(QGraphicsSceneMouseEvent * /*event*/)
 {
     ungrabMouse();
 }
+

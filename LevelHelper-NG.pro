@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     config.cpp \
     controller.cpp \
     gridconfig.cpp \
-    editorconfig.cpp
+    editorconfig.cpp \
+    model.cpp
 
 HEADERS  += mainwindow.h \
     leveleditor.h \
@@ -44,7 +45,8 @@ HEADERS  += mainwindow.h \
     config.h \
     controller.h \
     gridconfig.h \
-    editorconfig.h
+    editorconfig.h \
+    model.h
 
 FORMS    += mainwindow.ui \
     leveleditor.ui \

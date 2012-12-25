@@ -5,7 +5,6 @@
 #include <QWheelEvent>
 #include <QApplication>
 #include <QUrl>
-#include <QGraphicsSceneDragDropEvent>
 
 #include "sprite.h"
 #include "config.h"
@@ -132,8 +131,7 @@ void GraphWidget::mousePressEvent(QMouseEvent *event)
         else {
             if (item) {
                 m_pressed = true;
-                item->grabMouse();
-//                showControllerItem(mapToScene(event->pos()));
+                m_selectItems.append(item);
             } else {
                 m_mouseRectItem.show();
                 hideControllerItem();
@@ -184,6 +182,10 @@ void GraphWidget::keyReleaseEvent(QKeyEvent *event)
         m_selectItems.clear();
     }
 
+    // delete sprite
+    if (event->key() == Qt::Key_Delete) {
+    }
+
     QGraphicsView::keyReleaseEvent(event);
 }
 
@@ -207,9 +209,17 @@ void GraphWidget::dropEvent(QDropEvent *event)
     Debug() << event->format() << event->mimeData()->urls() << event->pos();
     if (m_scene) {
         QUrl url = event->mimeData()->urls().at(0);
-        Sprite *sprite = new Sprite(QPixmap(url.toLocalFile()));
-        sprite->setPos(mapToScene(event->pos()));
-        m_scene->addItem(sprite);
+        QString file = url.toLocalFile();
+        QPixmap pixmap(file);
+        if (!pixmap.isNull()) {
+            Sprite *sprite = new Sprite(QPixmap(url.toLocalFile()));
+            sprite->setPos(mapToScene(event->pos()));
+            m_scene->addItem(sprite);
+        } if (file.endsWith(".pshs")) {
+
+        } else if (file.endsWith(".plist")) {
+
+        }
     }
 }
 

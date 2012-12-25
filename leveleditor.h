@@ -7,9 +7,11 @@
 QT_BEGIN_NAMESPACE
 class QFileSystemModel;
 class QFileSystemWatcher;
+class QSortFilterProxyModel;
 QT_END_NAMESPACE
 
 class Resource;
+class Model;
 
 class LevelEditor : public QWidget
 {
@@ -49,11 +51,14 @@ private Q_SLOTS:
      */
     void onDirectoryChaned(QString dir);
 
+    void on_filter_textChanged(const QString &arg1);
+
 private:
     Ui::LevelEditor *ui;
-    QFileSystemModel *m_fileModel;
+    Model *m_fileModel;
     QFileSystemWatcher *m_watcher;
     Resource    *m_resource;
+    QSortFilterProxyModel *m_proxyMode;
 };
 
 #endif // LEVELEDITOR_H

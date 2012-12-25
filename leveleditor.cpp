@@ -8,10 +8,12 @@
 #include <QFileSystemWatcher>
 #include <QFileInfo>
 #include <QSettings>
+#include <QSortFilterProxyModel>
 
 #include "resource.h"
 #include "config.h"
 #include "Debug.h"
+#include "model.h"
 
 
 LevelEditor::LevelEditor(QWidget *parent)
@@ -20,6 +22,7 @@ LevelEditor::LevelEditor(QWidget *parent)
     , m_fileModel(0)
     , m_watcher(0)
     , m_resource(0)
+    , m_proxyMode(0)
 {
     ui->setupUi(this);
 
@@ -37,6 +40,7 @@ LevelEditor::~LevelEditor()
     SAFE_DELETE(m_fileModel);
     SAFE_DELETE(m_watcher);
     SAFE_DELETE(m_resource);
+    SAFE_DELETE(m_proxyMode);
     SAFE_DELETE(ui);
 }
 
@@ -74,11 +78,18 @@ void LevelEditor::on_resToolButton_clicked()
         m_resource = new Resource();
 
     if (!m_fileModel) {
-        m_fileModel = new QFileSystemModel();
+        m_fileModel = new Model();
         m_fileModel->setNameFilters(
                     QStringList() << "*.png" << "*.jpg" << "*.jpeg" << "*.pshs,*.plist"
                                     );
         m_fileModel->setNameFilterDisables(false);
+
+        // filter
+        m_proxyMode = new QSortFilterProxyModel(this);
+        m_proxyMode->setSourceModel(m_fileModel);
+        m_proxyMode->setFilterKeyColumn(0);
+
+        // set model
         ui->resourceTree->setModel(m_fileModel);
     }
 
@@ -97,6 +108,9 @@ void LevelEditor::onDirectoryChaned(QString dir)
     Debug() << Q_FUNC_INFO << dir << m_watcher->files() << m_watcher->directories();
 }
 
-
-
-
+void LevelEditor::on_filter_textChanged(const QString &arg1)
+{
+    if (m_proxyMode) {
+        m_proxyMode->setFilterRegExp(arg1);
+    }
+}

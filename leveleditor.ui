@@ -21,7 +21,7 @@
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
           <layout class="QVBoxLayout" name="verticalLayout">
@@ -146,6 +146,9 @@
               </spacer>
              </item>
             </layout>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="filter"/>
            </item>
            <item>
             <widget class="QTreeView" name="resourceTree">
