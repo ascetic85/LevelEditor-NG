@@ -40,6 +40,10 @@ protected:
 
     virtual void paintEvent(QPaintEvent *event);
 
+    virtual void dragEnterEvent(QDragEnterEvent *event);
+    virtual void dragMoveEvent(QDragMoveEvent *event);
+    virtual void dropEvent(QDropEvent *event);
+
 
     /**
      * @brief draw the iphone frame

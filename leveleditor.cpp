@@ -19,6 +19,7 @@ LevelEditor::LevelEditor(QWidget *parent)
     , ui(new Ui::LevelEditor() )
     , m_fileModel(0)
     , m_watcher(0)
+    , m_resource(0)
 {
     ui->setupUi(this);
 
@@ -27,12 +28,15 @@ LevelEditor::LevelEditor(QWidget *parent)
     if (settings.value("editor/opengl", false).toBool()) {
         ui->graphicsView->setViewport(new QGLWidget());
     }
+
+    ui->resourceTree->setDragEnabled(true);
 }
 
 LevelEditor::~LevelEditor()
 {
     SAFE_DELETE(m_fileModel);
     SAFE_DELETE(m_watcher);
+    SAFE_DELETE(m_resource);
     SAFE_DELETE(ui);
 }
 
@@ -71,6 +75,10 @@ void LevelEditor::on_resToolButton_clicked()
 
     if (!m_fileModel) {
         m_fileModel = new QFileSystemModel();
+        m_fileModel->setNameFilters(
+                    QStringList() << "*.png" << "*.jpg" << "*.jpeg" << "*.pshs,*.plist"
+                                    );
+        m_fileModel->setNameFilterDisables(false);
         ui->resourceTree->setModel(m_fileModel);
     }
 

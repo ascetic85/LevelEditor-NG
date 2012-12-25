@@ -94,6 +94,7 @@
     <addaction name="separator"/>
     <addaction name="separator"/>
     <addaction name="actionDelete"/>
+    <addaction name="actionOption"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -367,6 +368,11 @@
    </property>
    <property name="text">
     <string>OpenGL</string>
+   </property>
+  </action>
+  <action name="actionOption">
+   <property name="text">
+    <string>Option</string>
    </property>
   </action>
  </widget>

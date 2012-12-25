@@ -4,10 +4,11 @@
 #include <QGraphicsPolygonItem>
 #include <QWheelEvent>
 #include <QApplication>
+#include <QUrl>
+#include <QGraphicsSceneDragDropEvent>
 
 #include "sprite.h"
 #include "config.h"
-
 #include "Debug.h"
 
 GraphWidget::GraphWidget(QWidget *parent)
@@ -140,12 +141,12 @@ void GraphWidget::mousePressEvent(QMouseEvent *event)
         }
     }
 
-    // just for test, add sprite
-    else if (event->button() == Qt::RightButton && event->modifiers() == Qt::NoModifier) {
-        Sprite *sprite = new Sprite(QString("resource/1.png"), 0, m_scene);
-        QSizeF s = sprite->boundingRect().size();
-        sprite->setPos(mapToScene(event->pos()) - QPoint(s.width()/2, s.height()/2));
-    }
+//    // just for test, add sprite
+//    else if (event->button() == Qt::RightButton && event->modifiers() == Qt::NoModifier) {
+//        Sprite *sprite = new Sprite(QString("resource/1.png"), 0, m_scene);
+//        QSizeF s = sprite->boundingRect().size();
+//        sprite->setPos(mapToScene(event->pos()) - QPoint(s.width()/2, s.height()/2));
+//    }
 
     QGraphicsView::mousePressEvent(event);
 }
@@ -158,7 +159,6 @@ void GraphWidget::mouseReleaseEvent(QMouseEvent * event)
     QGraphicsView::mouseReleaseEvent(event);
 }
 
-#include <QTime>
 void GraphWidget::mouseMoveEvent(QMouseEvent *event)
 {
     if (m_pressed) {
@@ -192,12 +192,30 @@ void GraphWidget::paintEvent(QPaintEvent * event)
     QGraphicsView::paintEvent(event);
 }
 
+void GraphWidget::dragEnterEvent(QDragEnterEvent *event)
+{
+    event->accept();
+}
+
+void GraphWidget::dragMoveEvent(QDragMoveEvent *event)
+{
+    event->accept();
+}
+
+void GraphWidget::dropEvent(QDropEvent *event)
+{
+    Debug() << event->format() << event->mimeData()->urls() << event->pos();
+    if (m_scene) {
+        QUrl url = event->mimeData()->urls().at(0);
+        Sprite *sprite = new Sprite(QPixmap(url.toLocalFile()));
+        sprite->setPos(mapToScene(event->pos()));
+        m_scene->addItem(sprite);
+    }
+}
+
 void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
 {
     QGraphicsView::drawBackground(painter, rect);
-
-//    painter->setPen(QPen(Qt::red));
-//    painter->drawEllipse(100,100,100,100);
 
     if (!m_bgFrame.isNull()) {
         painter->drawPixmap(m_frameStartPoint, m_bgFrame);
@@ -211,14 +229,6 @@ void GraphWidget::drawForeground(QPainter *painter, const QRectF &rect)
     // view rect
     painter->setPen(QPen(Qt::red));
     painter->drawRect(sceneRect());
-
-#if 0
-    // draw coor
-    QPoint offset(-5,-5);
-    painter->setPen(QPen(QBrush(Qt::red), 3));
-    painter->drawLine(sceneRect().bottomLeft()+offset, offset);
-    painter->drawLine(sceneRect().bottomLeft()-offset, sceneRect().bottomRight()-offset);
-#endif
 }
 
 void GraphWidget::showMouseRect(QPoint start, QPoint end)

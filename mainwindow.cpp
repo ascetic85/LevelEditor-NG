@@ -3,6 +3,7 @@
 
 #include "config.h"
 #include "gridconfig.h"
+#include "editorconfig.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -34,3 +35,9 @@ void MainWindow::on_actionGrid_triggered()
     config.exec();
 }
 
+
+void MainWindow::on_actionOption_triggered()
+{
+    EditorConfig config(this);
+    config.exec();
+}
