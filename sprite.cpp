@@ -59,10 +59,6 @@ void Sprite::init()
 {
     setCacheMode(QGraphicsItem::ItemCoordinateCache);
     m_focusLevel = Sprite::None;
-
-    PointCtl *pCtl = new PointCtl(this, 0);
-    pCtl->setPos(10,10);
-    pCtl->setRect(0,0,10,10);
 }
 
 void Sprite::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

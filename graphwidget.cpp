@@ -23,13 +23,6 @@ GraphWidget::GraphWidget(QWidget *parent)
     this->setScene(m_scene);
     this->setSceneRect(0,0,w,h);
 
-    QGraphicsTextItem* t = m_scene->addText("Scene here");
-    t->setPos(w/2, h/2);
-
-    QPolygonF polygon;
-    polygon << QPointF(0, 0) << QPointF(w, h);
-    m_scene->addPolygon(polygon);
-
     init();
 //    m_scene->addRect(0,0,w,h, QPen(Qt::red, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin));
 
@@ -107,9 +100,14 @@ void GraphWidget::wheelEvent(QWheelEvent *event)
     QGraphicsView::wheelEvent(event);
 }
 
+/**
+ * @brief GraphWidget::mousePressEvent
+ * @param event
+ *
+ * - Operation of object is like folder on windows/mac/..
+ */
 void GraphWidget::mousePressEvent(QMouseEvent *event)
 {
-
     if (event->button() == Qt::LeftButton) {
         QGraphicsItem *item = itemAt(event->pos());
 
@@ -122,8 +120,10 @@ void GraphWidget::mousePressEvent(QMouseEvent *event)
                 if (!m_selectItems.contains(item))
                     m_selectItems.append(item);
             } else {
-                m_selectItems.clear();
-                m_selectItems.append(item);
+                if (!m_selectItems.contains(item)) {
+                    m_selectItems.clear();
+                    m_selectItems.append(item);
+                }
             }
         } else {
             // clear selected itmes and show mouse rect
@@ -145,6 +145,9 @@ void GraphWidget::mouseReleaseEvent(QMouseEvent * event)
 {
     m_pressed = false;
 
+    // select the items which in the mouse rect
+    m_selectItems = m_mouseRectItem.collidingItems();
+
     m_mouseRectItem.hide();
     QGraphicsView::mouseReleaseEvent(event);
 }
@@ -162,6 +165,8 @@ void GraphWidget::mouseMoveEvent(QMouseEvent *event)
         } else {
             QPointF p = mapToScene(event->pos());
             showMouseRect(m_mouseStartPoint.toPoint(), p.toPoint());
+
+
         }
     }
 

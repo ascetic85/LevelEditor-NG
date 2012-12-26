@@ -75,7 +75,7 @@ protected:
     bool                        m_pressed;
     qreal                       m_scaleFactor;
     QPointF                     m_prePos;
-    QVector<QGraphicsItem*>     m_selectItems;
+    QList<QGraphicsItem*>     m_selectItems;
 
     QPixmap                     m_bgFrame;
 
