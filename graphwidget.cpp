@@ -189,26 +189,41 @@ void GraphWidget::keyReleaseEvent(QKeyEvent *event)
 {
     QSettings settings(Config::config(), Config::format());
     // delete sprite
-    if (event->key() == settings.value(Config::key_del, Config::Del)) {
+    if (event->key() == settings.value(Config::KeyDel, Qt::Key_Delete)) {
         qDeleteAll(m_selectItems);
         m_selectItems.clear();
     }
 
     //
-    else if (event->key() == settings.value(Config::key_top, Config::Top)) {
+    else if (event->key() == settings.value(Config::KeyTop, Qt::Key_T)) {
         alignmentTop();
     }
 
-    else if (event->key() == settings.value(Config::key_left, Config::Left)) {
+    else if (event->key() == settings.value(Config::KeyLeft, Qt::Key_L)) {
         alignmentLeft();
     }
 
-    else if (event->key() == settings.value(Config::key_right, Config::Right)) {
+    else if (event->key() == settings.value(Config::KeyRight, Qt::Key_R)) {
         alignmentRight();
     }
 
-    else if (event->key() == settings.value(Config::key_bottom, Config::Bottom)) {
+    else if (event->key() == settings.value(Config::KeyBottom, Qt::Key_B)) {
         alignmentBottom();
+    }
+
+    // copy / paste
+    else if ((event->key() == settings.value(Config::KeyCopy, Qt::Key_C))
+             && (event->modifiers() == settings.value(Config::KeyCopyModifiers, Qt::ControlModifier).toInt())) {
+    }
+
+    else if ((event->key() == settings.value(Config::KeyPaste, Qt::Key_V))
+             && (event->modifiers() == settings.value(Config::KeyPasteModifers, Qt::ControlModifier).toInt())) {
+        foreach (QGraphicsItem* it, m_selectItems) {
+            Sprite* s = dynamic_cast<Sprite*> (it);
+            Sprite* news = new Sprite(s->pixmap());
+            news->setPos(s->pos()+QPoint(10,10));
+            m_scene->addItem(news);
+        }
     }
 
 
