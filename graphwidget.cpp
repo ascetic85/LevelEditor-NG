@@ -146,9 +146,17 @@ void GraphWidget::mouseReleaseEvent(QMouseEvent * event)
 {
     m_pressed = false;
 
+    // select the items which in the mouse rect
     if (m_mouseRectItem.isVisible()) {
-        // select the items which in the mouse rect
-        m_selectItems = m_mouseRectItem.collidingItems();
+        QList<QGraphicsItem*> list = m_mouseRectItem.collidingItems();
+
+        // todo: ctrl - select
+        if (event->modifiers() == Qt::ControlModifier) {
+//            QSet<QGraphicsItem*> ret = (list.toSet() | m_selectItems.toSet())
+//                    - (list.toSet() - m_selectItems.toSet());
+//            list = ret.toList();
+        }
+        m_selectItems = list;
     }
 
     m_mouseRectItem.hide();
