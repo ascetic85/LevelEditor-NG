@@ -12,7 +12,7 @@ TARGET = LevelHelper-NG
 TEMPLATE = app
 
 #DEFINES += UNICODE
-INCLUDEPATH += ./include
+INCLUDEPATH += ./include ./utils
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -31,7 +31,11 @@ SOURCES += main.cpp\
     controller.cpp \
     gridconfig.cpp \
     editorconfig.cpp \
-    model.cpp
+    model.cpp \
+    utils/filterlineedit.cpp \
+    utils/fancylineedit.cpp \
+    utils/historycompleter.cpp \
+    utils/qtcassert.cpp
 
 HEADERS  += mainwindow.h \
     leveleditor.h \
@@ -46,7 +50,12 @@ HEADERS  += mainwindow.h \
     controller.h \
     gridconfig.h \
     editorconfig.h \
-    model.h
+    model.h \
+    utils/utils_global.h \
+    utils/filterlineedit.h \
+    utils/fancylineedit.h \
+    utils/historycompleter.h \
+    utils/qtcassert.h
 
 FORMS    += mainwindow.ui \
     leveleditor.ui \
