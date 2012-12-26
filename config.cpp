@@ -30,4 +30,5 @@ void defaultSettings()
     }
 }
 
-}
+
+} // namespace Config

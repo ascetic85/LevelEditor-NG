@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8"?> 
+<DATA> 
+	<parent name = "editor">
+		<shortcut name = "Copy">
+			<label>Copy...</label>
+			<key>ctrl+c</key>
+		</shortcut>
+	</parent>
+	
+    <parent name="ss"> 
+        <shortcut name="S">
+			<label>asdf.adf</label>
+			<key>b</ke>
+		</shortcut>
+    </parent> 
+</DATA> 

@@ -24,6 +24,8 @@ const QString KeyCopy = "shortcut/c";
 const QString KeyCopyModifiers = "shortcut/ctrl";
 const QString KeyPaste = "shortcut/v";
 const QString KeyPasteModifers = "shortcut/ctrl";
+const QString ShortcutKey = "shortcut/file";
+const QString ShortcutFile = "shortcut.kms";
 
 QSettings::Format format();
 
