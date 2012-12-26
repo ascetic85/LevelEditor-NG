@@ -14,6 +14,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     : QGraphicsView(parent)
     , m_scene(new QGraphicsScene())
     , m_scaleFactor(1)
+    , m_pressed(false)
 {
     QSettings settings(Config::config(), Config::format());
     int w = settings.value(Config::editorw, Config::w).toReal();
@@ -113,39 +114,30 @@ void GraphWidget::mousePressEvent(QMouseEvent *event)
         QGraphicsItem *item = itemAt(event->pos());
 
         m_prePos = event->posF();
-
-        m_mouseStartPoint = mapToScene(event->pos());
-        m_mouseRectItem.setRect(m_mouseRectItem.x(), m_mouseRectItem.y(),1,1);
-
-        if (m_selectItems.count()) m_pressed = true;
-
-        if (event->modifiers() == Qt::ControlModifier) {
-            if (item && !m_selectItems.contains(item)) {
-                m_selectItems.append(item);
-                m_mouseRectItem.hide();
+        m_pressed = true;
+        if (item) {
+            // add child if pressed ctrl, otherwise set the selected
+            // item as selected items
+            if (event->modifiers() == Qt::ControlModifier) {
+                if (!m_selectItems.contains(item))
+                    m_selectItems.append(item);
             } else {
-                m_mouseRectItem.show();
-            }
-            hideControllerItem();
-        }
-        else {
-            if (item) {
-                m_pressed = true;
+                m_selectItems.clear();
                 m_selectItems.append(item);
-            } else {
-                m_mouseRectItem.show();
-                hideControllerItem();
             }
+        } else {
+            // clear selected itmes and show mouse rect
+
+            // clear
+            m_selectItems.clear();
+
+            // show rect
+            m_mouseStartPoint = mapToScene(event->pos());
+            m_mouseRectItem.setRect(m_mouseRectItem.x()
+                                    , m_mouseRectItem.y(),1,1);
+            m_mouseRectItem.show();
         }
     }
-
-//    // just for test, add sprite
-//    else if (event->button() == Qt::RightButton && event->modifiers() == Qt::NoModifier) {
-//        Sprite *sprite = new Sprite(QString("resource/1.png"), 0, m_scene);
-//        QSizeF s = sprite->boundingRect().size();
-//        sprite->setPos(mapToScene(event->pos()) - QPoint(s.width()/2, s.height()/2));
-//    }
-
     QGraphicsView::mousePressEvent(event);
 }
 
@@ -159,18 +151,18 @@ void GraphWidget::mouseReleaseEvent(QMouseEvent * event)
 
 void GraphWidget::mouseMoveEvent(QMouseEvent *event)
 {
+    // move items if there are, otherwise show mouse rect
     if (m_pressed) {
-        // for some
-        if (event->modifiers() == Qt::ControlModifier && !m_selectItems.isEmpty()) {
+        if (m_selectItems.count()) {
             foreach (QGraphicsItem* it, m_selectItems) {
-                QPointF delta = event->posF() - m_prePos + it->pos();
-                it->setPos(delta);
+                QPointF delta = event->posF() - m_prePos;
+                it->setPos(delta + it->pos());
             }
-            m_prePos = event->posF();
+            m_prePos =event->posF();
+        } else {
+            QPointF p = mapToScene(event->pos());
+            showMouseRect(m_mouseStartPoint.toPoint(), p.toPoint());
         }
-    } else {
-        QPointF p = mapToScene(event->pos());
-        showMouseRect(m_mouseStartPoint.toPoint(), p.toPoint());
     }
 
     QGraphicsView::mouseMoveEvent(event);
@@ -178,12 +170,10 @@ void GraphWidget::mouseMoveEvent(QMouseEvent *event)
 
 void GraphWidget::keyReleaseEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Control) {
-        m_selectItems.clear();
-    }
-
     // delete sprite
     if (event->key() == Qt::Key_Delete) {
+        qDeleteAll(m_selectItems);
+        m_selectItems.clear();
     }
 
     QGraphicsView::keyReleaseEvent(event);
@@ -206,7 +196,6 @@ void GraphWidget::dragMoveEvent(QDragMoveEvent *event)
 
 void GraphWidget::dropEvent(QDropEvent *event)
 {
-    Debug() << event->format() << event->mimeData()->urls() << event->pos();
     if (m_scene) {
         QUrl url = event->mimeData()->urls().at(0);
         QString file = url.toLocalFile();

@@ -96,4 +96,3 @@ void Sprite::mouseReleaseEvent(QGraphicsSceneMouseEvent * /*event*/)
 {
     ungrabMouse();
 }
-
