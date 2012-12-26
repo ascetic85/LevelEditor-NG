@@ -117,8 +117,10 @@ void GraphWidget::mousePressEvent(QMouseEvent *event)
             // add child if pressed ctrl, otherwise set the selected
             // item as selected items
             if (event->modifiers() == Qt::ControlModifier) {
-                if (!m_selectItems.contains(item))
+                if (!m_selectItems.contains(item)) {
                     m_selectItems.append(item);
+                }
+
             } else {
                 if (!m_selectItems.contains(item)) {
                     m_selectItems.clear();
@@ -135,7 +137,6 @@ void GraphWidget::mousePressEvent(QMouseEvent *event)
             m_mouseStartPoint = mapToScene(event->pos());
             m_mouseRectItem.setRect(m_mouseRectItem.x()
                                     , m_mouseRectItem.y(),1,1);
-            m_mouseRectItem.show();
         }
     }
     QGraphicsView::mousePressEvent(event);
@@ -145,8 +146,10 @@ void GraphWidget::mouseReleaseEvent(QMouseEvent * event)
 {
     m_pressed = false;
 
-    // select the items which in the mouse rect
-    m_selectItems = m_mouseRectItem.collidingItems();
+    if (m_mouseRectItem.isVisible()) {
+        // select the items which in the mouse rect
+        m_selectItems = m_mouseRectItem.collidingItems();
+    }
 
     m_mouseRectItem.hide();
     QGraphicsView::mouseReleaseEvent(event);
@@ -165,8 +168,6 @@ void GraphWidget::mouseMoveEvent(QMouseEvent *event)
         } else {
             QPointF p = mapToScene(event->pos());
             showMouseRect(m_mouseStartPoint.toPoint(), p.toPoint());
-
-
         }
     }
 
@@ -245,6 +246,7 @@ void GraphWidget::showMouseRect(QPoint start, QPoint end)
     if (w < 0) x = end.x();
     if (h < 0) y = end.y();
 
+    m_mouseRectItem.show();
     m_mouseRectItem.setRect(x,y, abs(w),abs(h));
 }
 
