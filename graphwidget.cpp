@@ -122,8 +122,23 @@ void GraphWidget::mousePressEvent(QMouseEvent *event)
                 if (!m_selectItems.contains(item)) {
                     m_selectItems.append(item);
                 }
+            }
 
-            } else {
+            // copy
+            else if (event->modifiers() == Qt::ShiftModifier) {
+                QList<QGraphicsItem*> tmpList;
+                foreach (QGraphicsItem* it, m_selectItems) {
+                    Sprite* s = dynamic_cast<Sprite*> (it);
+                    Sprite* news = new Sprite(s->pixmap());
+                    news->setPos(s->pos());
+                    tmpList.append(news);
+                    m_scene->addItem(news);
+                }
+                m_selectItems = tmpList;
+            }
+
+            // show
+            else {
                 if (!m_selectItems.contains(item)) {
                     m_selectItems.clear();
                     m_selectItems.append(item);
