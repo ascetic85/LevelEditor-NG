@@ -28,6 +28,13 @@ public:
 
     void setUpright(bool yes, DeviceType type);
 
+
+public Q_SLOTS:
+    /**
+     * @brief alignment
+     */
+    void alignment(Qt::Alignment alig);
+
 protected:
     void init();
 
@@ -66,6 +73,13 @@ protected:
     void showControllerItem(QPointF pos);
     void showControllerItem(QPoint pos);
 
+
+    void alignmentTop();
+    void alignmentBottom();
+    void alignmentLeft();
+    void alignmentRight();
+
+
 protected:
     QGraphicsScene*             m_scene;
     QGraphicsRectItem           m_mouseRectItem;
@@ -75,7 +89,8 @@ protected:
     bool                        m_pressed;
     qreal                       m_scaleFactor;
     QPointF                     m_prePos;
-    QList<QGraphicsItem*>     m_selectItems;
+    QList<QGraphicsItem*>       m_selectItems;
+    QGraphicsItem*              m_aligmentItem;
 
     QPixmap                     m_bgFrame;
 

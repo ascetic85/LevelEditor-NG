@@ -15,6 +15,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     , m_scene(new QGraphicsScene())
     , m_scaleFactor(1)
     , m_pressed(false)
+    , m_aligmentItem(0)
 {
     QSettings settings(Config::config(), Config::format());
     int w = settings.value(Config::editorw, Config::w).toReal();
@@ -26,7 +27,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     init();
 //    m_scene->addRect(0,0,w,h, QPen(Qt::red, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin));
 
-    setUpright(false, iPhone480x320);
+    setUpright(false, iPhone480x320);  
 }
 
 
@@ -110,6 +111,7 @@ void GraphWidget::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         QGraphicsItem *item = itemAt(event->pos());
+        m_aligmentItem = item;
 
         m_prePos = event->posF();
         m_pressed = true;
@@ -132,6 +134,7 @@ void GraphWidget::mousePressEvent(QMouseEvent *event)
 
             // clear
             m_selectItems.clear();
+            m_aligmentItem = NULL;
 
             // show rect
             m_mouseStartPoint = mapToScene(event->pos());
@@ -184,11 +187,30 @@ void GraphWidget::mouseMoveEvent(QMouseEvent *event)
 
 void GraphWidget::keyReleaseEvent(QKeyEvent *event)
 {
+    QSettings settings(Config::config(), Config::format());
     // delete sprite
-    if (event->key() == Qt::Key_Delete) {
+    if (event->key() == settings.value(Config::key_del, Config::Del)) {
         qDeleteAll(m_selectItems);
         m_selectItems.clear();
     }
+
+    //
+    else if (event->key() == settings.value(Config::key_top, Config::Top)) {
+        alignmentTop();
+    }
+
+    else if (event->key() == settings.value(Config::key_left, Config::Left)) {
+        alignmentLeft();
+    }
+
+    else if (event->key() == settings.value(Config::key_right, Config::Right)) {
+        alignmentRight();
+    }
+
+    else if (event->key() == settings.value(Config::key_bottom, Config::Bottom)) {
+        alignmentBottom();
+    }
+
 
     QGraphicsView::keyReleaseEvent(event);
 }
@@ -273,4 +295,90 @@ void GraphWidget::showControllerItem(QPoint pos)
 {
     m_controllerItem.show();
     m_controllerItem.setPos(pos);
+}
+
+void GraphWidget::alignment(Qt::Alignment alig)
+{
+    switch (alig) {
+    case Qt::AlignLeft:
+        alignmentLeft();
+        break;
+
+    case Qt::AlignRight:
+        break;
+
+    case Qt::AlignTop:
+        alignmentLeft();
+        break;
+
+    case Qt::AlignBottom:
+        break;
+
+    default:
+        break;
+    }
+}
+
+/**
+ * @brief 向上对齐
+ */
+void GraphWidget::alignmentTop()
+{
+    if (m_selectItems.count() && m_aligmentItem) {
+        if (m_selectItems.contains(m_aligmentItem)) {
+            foreach (QGraphicsItem* it, m_selectItems) {
+                if (m_aligmentItem != it) {
+                    it->setY(m_aligmentItem->y());
+                }
+            }
+        }
+    }
+}
+
+void GraphWidget::alignmentBottom()
+{
+    if (m_selectItems.count() && m_aligmentItem) {
+        if (m_selectItems.contains(m_aligmentItem)) {
+            int b = m_aligmentItem->y()+m_aligmentItem->boundingRect().size().height();
+            // b = it.height+y
+            foreach (QGraphicsItem* it, m_selectItems) {
+                if (m_aligmentItem != it) {
+                    int y = b - it->boundingRect().size().height();
+                    it->setY(y);
+                }
+            }
+        }
+    }
+}
+
+/**
+ * @brief 向左对齐
+ */
+void GraphWidget::alignmentLeft()
+{
+    if (m_selectItems.count() && m_aligmentItem) {
+        if (m_selectItems.contains(m_aligmentItem)) {
+            foreach (QGraphicsItem* it, m_selectItems) {
+                if (m_aligmentItem != it) {
+                    it->setX(m_aligmentItem->x());
+                }
+            }
+        }
+    }
+}
+
+void GraphWidget::alignmentRight()
+{
+    if (m_selectItems.count() && m_aligmentItem) {
+        if (m_selectItems.contains(m_aligmentItem)) {
+            int r = m_aligmentItem->x() + m_aligmentItem->boundingRect().size().width();
+            //  r = it.width+x;
+            foreach (QGraphicsItem* it, m_selectItems) {
+                if (m_aligmentItem != it) {
+                    int x =  r - it->boundingRect().size().width();
+                    it->setX(x);
+                }
+            }
+        }
+    }
 }
