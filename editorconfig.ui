@@ -224,10 +224,10 @@
              </widget>
             </item>
             <item>
-             <widget class="Utils::FilterLineEdit" name="lineEdit_3"/>
+             <widget class="Utils::FilterLineEdit" name="keySequence"/>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_5">
+             <widget class="QPushButton" name="resetButton">
               <property name="text">
                <string>Reset</string>
               </property>

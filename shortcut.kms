@@ -1,16 +1,17 @@
-﻿<?xml version="1.0" encoding="UTF-8"?> 
-<DATA> 
-	<parent name = "editor">
-		<shortcut name = "Copy">
-			<label>Copy...</label>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<data>
+	<section name="Scene">
+		<shortcut name="Copy">
+			<label>Object Copy是咩</label>
 			<key>ctrl+c</key>
 		</shortcut>
-	</parent>
-	
-    <parent name="ss"> 
-        <shortcut name="S">
-			<label>asdf.adf</label>
-			<key>b</ke>
+		<shortcut name="Paste">
+			<label>Object 粘贴</label>
+			<key>ctrl+c</key>
 		</shortcut>
-    </parent> 
-</DATA> 
+	</section>
+	<section name="Editor">
+		<shortcut name="Copy">
+		</shortcut>
+	</section>
+</data>

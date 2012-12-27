@@ -6,6 +6,7 @@
 #include "config.h"
 #include "Debug.h"
 
+
 EditorConfig::EditorConfig(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::EditorConfig)
@@ -27,20 +28,10 @@ EditorConfig::~EditorConfig()
 void EditorConfig::init()
 {
     parseXML();
-
-    // command list
-    QTreeWidgetItem *sceneItem = new QTreeWidgetItem(QStringList()<<"Scene");
-    ui->commandList->addTopLevelItem(sceneItem);
-
-    QList<QStringList> commands;
-    commands << (QStringList()<<"1"<<"2"<<"3");
-    commands << (QStringList()<<"3"<<"2"<<"1");
-    foreach (QStringList it, commands) {
-        sceneItem->addChild(new QTreeWidgetItem(it));
-    }
-
-
     ui->commandList->expandAll();
+
+    connect(ui->keySequence, SIGNAL(textChanged(QString))
+            , this, SLOT(onKeySequnenceChanged(QString)));
 }
 
 void EditorConfig::parseXML()
@@ -48,53 +39,70 @@ void EditorConfig::parseXML()
     m_xml.clear();
 
     QSettings settings(Config::config(), Config::format());
-    QFile xml(settings.value(Config::ShortcutKey, Config::ShortcutFile).toString());
+    QFile file(settings.value(Config::ShortcutKey, Config::ShortcutFile).toString());
 
+    if (file.open(QIODevice::ReadOnly|QIODevice::Text)) {
+        QByteArray all = file.readAll();
+        m_xml.addData(all);
+        while (!m_xml.atEnd()) {
+            m_xml.readNext();
 
-    if (xml.open(QIODevice::ReadOnly)) {
-        m_xml.addData(xml.readAll());
-        QXmlStreamReader &reader = m_xml;
-        reader.readNext();
-
-        QStringList parent;
-        QList<QStringList> commands;
-        QStringList value;
-        while (!reader.atEnd())
-        {
-            if(reader.isStartElement())
-            {
-                if(reader.name() == "parent")
-                {
-//                    Debug() << "parent" << reader.attributes().value("name");
-                    parent.append(reader.attributes().value("parent").toString());
+            QString name = m_xml.name().toString();
+            if (m_xml.isStartElement()) {
+                if (name == "section") {
+                    readSection();
                 }
-                else if(reader.name() == "shortcut")
-                {
-//                    Debug() << reader.attributes().value("name");
-                    value.append(reader.attributes().value("name").toString());
-                }
-                else if (reader.name() == "label") {
-//                    Debug() << "label" << reader.readElementText();
-                    value.append(reader.readElementText());
-                }
-                else if (reader.name() == "key") {
-//                    Debug() << "key" << reader.readElementText();
-                    value.append(reader.readElementText());
+            } else if (m_xml.isEndElement()) {
+                if (name == "data") {
+                    break;
                 }
             }
-            else if(reader.isEndElement())
-            {
-                if(reader.name() == "parent")
-                {
-                    Debug() << __LINE__ << "parent end" << value;
-                    commands.append(value);
-                    value.clear();
-//                     message_map->insert(std::make_pair(message->GetMsgPhone(), message));
-                }
-            }
-            reader.readNext();
         }
     }
+
+    ui->commandList->expandAll();
+}
+
+void EditorConfig::readSection()
+{
+    QString topName = m_xml.attributes().value("name").toString();
+    QTreeWidgetItem *top = new QTreeWidgetItem(QStringList()<<topName);
+    ui->commandList->addTopLevelItem(top);
+
+    while (!m_xml.atEnd()) {
+        m_xml.readNext();
+
+        QString name = m_xml.name().toString();
+        if (m_xml.isStartElement()) {
+            if (name == "shortcut") {
+                QTreeWidgetItem* item = new QTreeWidgetItem(readShortcut());
+                top->addChild(item);
+            }
+        } else if (m_xml.isEndElement()) {
+            if (name == "section") {
+                break;
+            }
+        }
+    }
+}
+
+QStringList EditorConfig::readShortcut()
+{
+    QStringList list;
+    list.append(m_xml.attributes().value("name").toString());
+    while (!m_xml.atEnd()) {
+        m_xml.readNext();
+
+        QString name = m_xml.name().toString();
+        if (m_xml.isStartElement()) {
+            list.append(m_xml.readElementText());
+        } else if (m_xml.isEndElement()) {
+            if (name == "shortcut") {
+                break;
+            }
+        }
+    }
+    return list;
 }
 
 void EditorConfig::on_buttonBox_accepted()
@@ -107,7 +115,17 @@ void EditorConfig::on_buttonBox_rejected()
     reject();
 }
 
-void EditorConfig::on_commandList_clicked(const QModelIndex &index)
+void EditorConfig::on_commandList_clicked(const QModelIndex & /*index*/)
 {
+    ui->keySequence->setText(ui->commandList->currentItem()->text(2));
+}
 
+void EditorConfig::on_resetButton_clicked()
+{
+    ui->keySequence->setText("");
+}
+
+void EditorConfig::onKeySequnenceChanged(QString text)
+{
+    ui->commandList->currentItem()->setText(2, text);
 }
