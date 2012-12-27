@@ -1,17 +1,19 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <data>
-	<section name="Scene">
-		<shortcut name="Copy">
-			<label>Object Copy是咩</label>
-			<key>ctrl+c</key>
-		</shortcut>
-		<shortcut name="Paste">
-			<label>Object 粘贴</label>
-			<key>ctrl+c</key>
-		</shortcut>
-	</section>
-	<section name="Editor">
-		<shortcut name="Copy">
-		</shortcut>
-	</section>
+    <section name="Scene">
+        <shortcut name="Paste">
+            <lable>Object 粘贴</lable>
+            <key>ctrl+c</key>
+        </shortcut>
+        <shortcut name="Copy">
+            <lable>Object Copy是咩</lable>
+            <key>ctrl+c</key>
+        </shortcut>
+    </section>
+    <section name="Editor">
+        <shortcut name="Copy">
+            <lable>###</lable>
+            <key>ctrl+u</key>
+        </shortcut>
+    </section>
 </data>

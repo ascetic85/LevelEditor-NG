@@ -9,6 +9,10 @@ namespace Ui {
 class EditorConfig;
 }
 
+QT_BEGIN_NAMESPACE
+class QTreeWidgetItem;
+QT_END_NAMESPACE
+
 class EditorConfig : public QDialog
 {
     Q_OBJECT
@@ -35,10 +39,13 @@ private slots:
 
     void onKeySequnenceChanged(QString text);
 
+    void on_applyButton_clicked();
+
 private:
     Ui::EditorConfig *ui;
 
     QXmlStreamReader m_xml;
+
 };
 
 #endif // EDITORCONFIG_H
