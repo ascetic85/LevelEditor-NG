@@ -53,6 +53,14 @@ private Q_SLOTS:
 
     void on_filter_textChanged(const QString &arg1);
 
+    void on_toolClone_clicked();
+
+    void on_toolDelete_clicked();
+
+    void on_cloneToolButton_clicked(bool checked);
+
+    void on_physicBoundToolButton_clicked(bool checked);
+
 private:
     Ui::LevelEditor *ui;
     Model *m_fileModel;

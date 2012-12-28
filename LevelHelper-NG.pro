@@ -35,7 +35,9 @@ SOURCES += main.cpp\
     utils/filterlineedit.cpp \
     utils/fancylineedit.cpp \
     utils/historycompleter.cpp \
-    utils/qtcassert.cpp
+    utils/qtcassert.cpp \
+    advanceclone.cpp \
+    phsyicbound.cpp
 
 HEADERS  += mainwindow.h \
     leveleditor.h \
@@ -55,14 +57,18 @@ HEADERS  += mainwindow.h \
     utils/filterlineedit.h \
     utils/fancylineedit.h \
     utils/historycompleter.h \
-    utils/qtcassert.h
+    utils/qtcassert.h \
+    advanceclone.h \
+    phsyicbound.h
 
 FORMS    += mainwindow.ui \
     leveleditor.ui \
     customproperties.ui \
     supportingcode.ui \
     gridconfig.ui \
-    editorconfig.ui
+    editorconfig.ui \
+    advanceclone.ui \
+    phsyicbound.ui
 
 OTHER_FILES += \
     README.md

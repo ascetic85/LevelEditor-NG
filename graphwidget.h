@@ -35,6 +35,16 @@ public Q_SLOTS:
      */
     void alignment(Qt::Alignment alig);
 
+    /**
+     * @brief copy and paste selected items
+     */
+    void copyAndPasteSelectedItem();
+
+    /**
+     * @brief delete selected items
+     */
+    void deleteSelectedItem();
+
 protected:
     void init();
 

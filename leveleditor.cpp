@@ -14,6 +14,7 @@
 #include "config.h"
 #include "Debug.h"
 #include "model.h"
+#include "advanceclone.h"
 
 
 LevelEditor::LevelEditor(QWidget *parent)
@@ -33,6 +34,8 @@ LevelEditor::LevelEditor(QWidget *parent)
     }
 
     ui->resourceTree->setDragEnabled(true);
+
+    ui->stackedWidget->hide();
 }
 
 LevelEditor::~LevelEditor()
@@ -112,5 +115,38 @@ void LevelEditor::on_filter_textChanged(const QString &arg1)
 {
     if (m_proxyMode) {
         m_proxyMode->setFilterRegExp(arg1);
+    }
+}
+
+void LevelEditor::on_toolClone_clicked()
+{
+    ui->graphicsView->copyAndPasteSelectedItem();
+}
+
+void LevelEditor::on_toolDelete_clicked()
+{
+    ui->graphicsView->deleteSelectedItem();
+}
+
+void LevelEditor::on_cloneToolButton_clicked(bool checked)
+{
+    if (checked) {
+        ui->stackedWidget->show();
+        ui->stackedWidget->setMaximumHeight(ui->advanceclone->maximumHeight());
+        ui->advanceclone->show();
+        ui->advanceclone->raise();
+    } else {
+        ui->stackedWidget->hide();
+    }
+}
+
+void LevelEditor::on_physicBoundToolButton_clicked(bool checked)
+{
+    if (checked) {
+        ui->stackedWidget->show();
+        ui->phsyicbound->show();
+        ui->phsyicbound->raise();
+    } else {
+        ui->stackedWidget->hide();
     }
 }

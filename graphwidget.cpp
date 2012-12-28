@@ -200,13 +200,28 @@ void GraphWidget::mouseMoveEvent(QMouseEvent *event)
     QGraphicsView::mouseMoveEvent(event);
 }
 
+void GraphWidget::copyAndPasteSelectedItem()
+{
+    foreach (QGraphicsItem* it, m_selectItems) {
+        Sprite* s = dynamic_cast<Sprite*> (it);
+        Sprite* news = new Sprite(s->pixmap());
+        news->setPos(s->pos()+QPoint(10,10));
+        m_scene->addItem(news);
+    }
+}
+
+void GraphWidget::deleteSelectedItem()
+{
+    qDeleteAll(m_selectItems);
+    m_selectItems.clear();
+}
+
 void GraphWidget::keyReleaseEvent(QKeyEvent *event)
 {
     QSettings settings(Config::config(), Config::format());
     // delete sprite
     if (event->key() == settings.value(Config::KeyDel, Qt::Key_Delete)) {
-        qDeleteAll(m_selectItems);
-        m_selectItems.clear();
+        deleteSelectedItem();
     }
 
     //
@@ -233,12 +248,7 @@ void GraphWidget::keyReleaseEvent(QKeyEvent *event)
 
     else if ((event->key() == settings.value(Config::KeyPaste, Qt::Key_V))
              && (event->modifiers() == settings.value(Config::KeyPasteModifers, Qt::ControlModifier).toInt())) {
-        foreach (QGraphicsItem* it, m_selectItems) {
-            Sprite* s = dynamic_cast<Sprite*> (it);
-            Sprite* news = new Sprite(s->pixmap());
-            news->setPos(s->pos()+QPoint(10,10));
-            m_scene->addItem(news);
-        }
+        copyAndPasteSelectedItem();
     }
 
 
