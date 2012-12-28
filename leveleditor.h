@@ -57,9 +57,15 @@ private Q_SLOTS:
 
     void on_toolDelete_clicked();
 
-    void on_cloneToolButton_clicked(bool checked);
+    void on_physicBoundToolButton_toggled(bool checked);
 
-    void on_physicBoundToolButton_clicked(bool checked);
+    void on_gravityToolButton_toggled(bool checked);
+
+    void on_cloneToolButton_toggled(bool checked);
+
+    void on_worldSizeToolButton_toggled(bool checked);
+
+    void on_bezierToolButton_toggled(bool checked);
 
 private:
     Ui::LevelEditor *ui;
@@ -67,6 +73,7 @@ private:
     QFileSystemWatcher *m_watcher;
     Resource    *m_resource;
     QSortFilterProxyModel *m_proxyMode;
+    QList<QToolButton*> m_buttons;
 };
 
 #endif // LEVELEDITOR_H

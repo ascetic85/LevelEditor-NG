@@ -37,7 +37,10 @@ SOURCES += main.cpp\
     utils/historycompleter.cpp \
     utils/qtcassert.cpp \
     advanceclone.cpp \
-    phsyicbound.cpp
+    phsyicbound.cpp \
+    grivatyui.cpp \
+    worldsizeui.cpp \
+    bezierui.cpp
 
 HEADERS  += mainwindow.h \
     leveleditor.h \
@@ -59,7 +62,10 @@ HEADERS  += mainwindow.h \
     utils/historycompleter.h \
     utils/qtcassert.h \
     advanceclone.h \
-    phsyicbound.h
+    phsyicbound.h \
+    grivatyui.h \
+    worldsizeui.h \
+    bezierui.h
 
 FORMS    += mainwindow.ui \
     leveleditor.ui \
@@ -68,7 +74,10 @@ FORMS    += mainwindow.ui \
     gridconfig.ui \
     editorconfig.ui \
     advanceclone.ui \
-    phsyicbound.ui
+    phsyicbound.ui \
+    grivatyui.ui \
+    worldsizeui.ui \
+    bezierui.ui
 
 OTHER_FILES += \
     README.md

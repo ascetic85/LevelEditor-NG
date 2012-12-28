@@ -35,7 +35,17 @@ LevelEditor::LevelEditor(QWidget *parent)
 
     ui->resourceTree->setDragEnabled(true);
 
+    int total = ui->stackedWidget->count();
+    for (int i = 0; i < total; ++i) {
+        ui->stackedWidget->widget(i)->hide();
+    }
     ui->stackedWidget->hide();
+
+    m_buttons.append(ui->physicBoundToolButton);
+    m_buttons.append(ui->gravityToolButton);
+    m_buttons.append(ui->worldSizeToolButton);
+    m_buttons.append(ui->bezierToolButton);
+    m_buttons.append(ui->cloneToolButton);
 }
 
 LevelEditor::~LevelEditor()
@@ -128,25 +138,87 @@ void LevelEditor::on_toolDelete_clicked()
     ui->graphicsView->deleteSelectedItem();
 }
 
-void LevelEditor::on_cloneToolButton_clicked(bool checked)
+void LevelEditor::on_physicBoundToolButton_toggled(bool checked)
 {
+    Debug() << Q_FUNC_INFO << checked;
     if (checked) {
+        foreach (QToolButton *bt, m_buttons) {
+            if (bt != ui->physicBoundToolButton)
+                bt->setChecked(false);
+        }
+        ui->stackedWidget->setMaximumHeight(ui->phsyicbound->maximumHeight());
         ui->stackedWidget->show();
-        ui->stackedWidget->setMaximumHeight(ui->advanceclone->maximumHeight());
-        ui->advanceclone->show();
-        ui->advanceclone->raise();
+        ui->phsyicbound->show();
     } else {
+        ui->phsyicbound->hide();
         ui->stackedWidget->hide();
     }
 }
 
-void LevelEditor::on_physicBoundToolButton_clicked(bool checked)
+void LevelEditor::on_gravityToolButton_toggled(bool checked)
 {
+    Debug() << Q_FUNC_INFO << checked;
     if (checked) {
+        foreach (QToolButton *bt, m_buttons) {
+            if (bt != ui->gravityToolButton)
+                bt->setChecked(false);
+        }
+        ui->stackedWidget->setMaximumHeight(ui->grivaity->maximumHeight());
         ui->stackedWidget->show();
-        ui->phsyicbound->show();
-        ui->phsyicbound->raise();
+        ui->grivaity->show();
     } else {
+        ui->grivaity->hide();
+        ui->stackedWidget->hide();
+    }
+}
+
+void LevelEditor::on_cloneToolButton_toggled(bool checked)
+{
+    Debug() << Q_FUNC_INFO << checked;
+    if (checked) {
+        foreach (QToolButton *bt, m_buttons) {
+            if (bt != ui->cloneToolButton)
+                bt->setChecked(false);
+        }
+        ui->stackedWidget->setMaximumHeight(ui->advanceclone->maximumHeight());
+        ui->stackedWidget->show();
+        ui->advanceclone->show();
+    } else {
+        ui->advanceclone->hide();
+        ui->stackedWidget->hide();
+    }
+}
+
+void LevelEditor::on_worldSizeToolButton_toggled(bool checked)
+{
+    Debug() << Q_FUNC_INFO << checked;
+    if (checked) {
+        foreach (QToolButton *bt, m_buttons) {
+            if (bt != ui->worldSizeToolButton)
+                bt->setChecked(false);
+        }
+        ui->stackedWidget->setMaximumHeight(ui->worldsizeUI->maximumHeight());
+        ui->stackedWidget->show();
+        ui->worldsizeUI->show();
+    } else {
+        ui->worldsizeUI->hide();
+        ui->stackedWidget->hide();
+    }
+}
+
+void LevelEditor::on_bezierToolButton_toggled(bool checked)
+{
+    Debug() << Q_FUNC_INFO << checked;
+    if (checked) {
+        foreach (QToolButton *bt, m_buttons) {
+            if (bt != ui->bezierToolButton)
+                bt->setChecked(false);
+        }
+        ui->stackedWidget->setMaximumHeight(ui->bezierUI->maximumHeight());
+        ui->stackedWidget->show();
+        ui->bezierUI->show();
+    } else {
+        ui->bezierUI->hide();
         ui->stackedWidget->hide();
     }
 }

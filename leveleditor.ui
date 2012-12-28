@@ -263,6 +263,9 @@
        <number>0</number>
       </property>
       <widget class="PhsyicBound" name="phsyicbound"/>
+      <widget class="GrivatyUI" name="grivaity"/>
+      <widget class="WorldSizeUI" name="worldsizeUI"/>
+      <widget class="BezierUI" name="bezierUI"/>
       <widget class="AdvanceClone" name="advanceclone"/>
      </widget>
      <widget class="QWidget" name="layoutWidget">
@@ -285,6 +288,9 @@
          <property name="text">
           <string>Gravity</string>
          </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item>
@@ -292,12 +298,18 @@
          <property name="text">
           <string>Game World Size</string>
          </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item>
         <widget class="QToolButton" name="bezierToolButton">
          <property name="text">
           <string>Bezier Tool</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -333,6 +345,24 @@
    <class>PhsyicBound</class>
    <extends>QWidget</extends>
    <header>phsyicbound.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>GrivatyUI</class>
+   <extends>QWidget</extends>
+   <header>grivatyui.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>WorldSizeUI</class>
+   <extends>QWidget</extends>
+   <header>worldsizeui.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>BezierUI</class>
+   <extends>QWidget</extends>
+   <header>bezierui.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
