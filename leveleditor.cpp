@@ -140,7 +140,6 @@ void LevelEditor::on_toolDelete_clicked()
 
 void LevelEditor::on_physicBoundToolButton_toggled(bool checked)
 {
-    Debug() << Q_FUNC_INFO << checked;
     if (checked) {
         foreach (QToolButton *bt, m_buttons) {
             if (bt != ui->physicBoundToolButton)
@@ -157,7 +156,6 @@ void LevelEditor::on_physicBoundToolButton_toggled(bool checked)
 
 void LevelEditor::on_gravityToolButton_toggled(bool checked)
 {
-    Debug() << Q_FUNC_INFO << checked;
     if (checked) {
         foreach (QToolButton *bt, m_buttons) {
             if (bt != ui->gravityToolButton)
@@ -174,7 +172,6 @@ void LevelEditor::on_gravityToolButton_toggled(bool checked)
 
 void LevelEditor::on_cloneToolButton_toggled(bool checked)
 {
-    Debug() << Q_FUNC_INFO << checked;
     if (checked) {
         foreach (QToolButton *bt, m_buttons) {
             if (bt != ui->cloneToolButton)
@@ -191,7 +188,6 @@ void LevelEditor::on_cloneToolButton_toggled(bool checked)
 
 void LevelEditor::on_worldSizeToolButton_toggled(bool checked)
 {
-    Debug() << Q_FUNC_INFO << checked;
     if (checked) {
         foreach (QToolButton *bt, m_buttons) {
             if (bt != ui->worldSizeToolButton)
@@ -208,7 +204,6 @@ void LevelEditor::on_worldSizeToolButton_toggled(bool checked)
 
 void LevelEditor::on_bezierToolButton_toggled(bool checked)
 {
-    Debug() << Q_FUNC_INFO << checked;
     if (checked) {
         foreach (QToolButton *bt, m_buttons) {
             if (bt != ui->bezierToolButton)
